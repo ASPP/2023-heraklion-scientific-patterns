@@ -19,17 +19,21 @@ n_iterations = 1000
 random_state = np.random.RandomState(seed)
 
 # STEP 1: Create a context map
-
+context_map=context_maps.labyrinth_context_map_builder(size)
 
 # STEP 2: Create a Walker
-
+walker = Walker(sigma_i, sigma_j, context_map)
 
 # STEP 3: Simulate the walk
-
+trajectory = []
+for _ in range(1000):
+    i, j = walker.sample_next_step(i, j)
+    trajectory.append((i, j))
 
 # STEP 4: Save the trajectory
 curr_time = time.strftime("%Y%m%d-%H%M%S")
 # save the npy file here!
+np.save(f"sim_{curr_time}.npy", np.array(trajectory))
 
 # STEP 5: Save the metadata
 # lookup git repository
