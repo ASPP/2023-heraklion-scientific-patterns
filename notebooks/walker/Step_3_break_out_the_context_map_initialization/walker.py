@@ -4,36 +4,13 @@ import numpy as np
 class Walker:
     """ The Walker knows how to walk at random on a context map. """
 
-    def __init__(self, sigma_i, sigma_j, size, map_type='flat'):
+    def __init__(self, sigma_i, sigma_j, size, context_map):
         self.sigma_i = sigma_i
         self.sigma_j = sigma_j
         self.size = size
-
-        if map_type == 'flat':
-            context_map = np.ones((size, size))
-        elif map_type == 'hills':
-            grid_ii, grid_jj = np.mgrid[0:size, 0:size]
-            i_waves = np.sin(grid_ii / 130) + np.sin(grid_ii / 10)
-            i_waves /= i_waves.max()
-            j_waves = np.sin(grid_jj / 100) + np.sin(grid_jj / 50) + \
-                np.sin(grid_jj / 10)
-            j_waves /= j_waves.max()
-            context_map = j_waves + i_waves
-        elif map_type == 'labyrinth':
-            context_map = np.ones((size, size))
-            context_map[50:100, 50:60] = 0
-            context_map[20:89, 80:90] = 0
-            context_map[90:120, 0:10] = 0
-            context_map[120:size, 30:40] = 0
-            context_map[180:190, 50:60] = 0
-
-            context_map[50:60, 50:200] = 0
-            context_map[179:189, 80:130] = 0
-            context_map[110:120, 0:190] = 0
-            context_map[120:size, 30:40] = 0
-            context_map[180:190, 50:60] = 0
-        context_map /= context_map.sum()
         self.context_map = context_map
+
+
 
         # Pre-compute a 2D grid of coordinates for efficiency
         self._grid_ii, self._grid_jj = np.mgrid[0:size, 0:size]
